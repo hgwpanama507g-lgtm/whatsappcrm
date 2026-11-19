@@ -14,9 +14,38 @@ interface SendWhatsAppOptions {
   ctaText?: string;
   ctaUrl?: string;
   imageUrl?: string;
+  contactId?: string;
 }
 
 export async function sendWhatsApp(options: SendWhatsAppOptions) {
+  // Si estamos en el navegador, llamamos a la ruta /api/send de la app
+  if (typeof window !== 'undefined') {
+    try {
+      const res = await fetch('/api/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          phone: options.to,
+          message: options.body,
+          type: options.type,
+          contactId: options.contactId,
+          buttons: options.buttons,
+          sections: options.sections,
+          ctaText: options.ctaText,
+          ctaUrl: options.ctaUrl,
+          imageUrl: options.imageUrl,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Error al enviar mensaje');
+      return data;
+    } catch (err: any) {
+      console.error('[Frontend Send Error]', err);
+      throw err;
+    }
+  }
+
+  // Si estamos en servidor (Node / Vercel Functions), realizamos la petición directa a Meta Graph API
   const token = process.env.WHATSAPP_TOKEN || import.meta.env?.VITE_WHATSAPP_TOKEN;
   const phoneNumberId = process.env.WHATSAPP_PHONE_NUMBER_ID || import.meta.env?.VITE_WHATSAPP_PHONE_NUMBER_ID;
   const apiVersion = process.env.WHATSAPP_API_VERSION || 'v21.0';
