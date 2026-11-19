@@ -1,0 +1,6 @@
+{
+  "name": "CRM WhatsApp",
+  "description": "CRM con WhatsApp Business API, automatización con bots, bandeja de entrada en tiempo real y embudo de ventas.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
