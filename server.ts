@@ -447,3 +447,20 @@ export function setupServer(app: express.Express) {
   app.post('/api/send', handleSendEndpoint);
   app.post('/api/whatsapp/send', handleSendEndpoint);
 }
+
+// Iniciar servidor Express en producción / Cloud Run
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+setupServer(app);
+
+app.use(express.static(path.join(__dirname, 'dist')));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+});
+
+app.listen(Number(PORT), '0.0.0.0', () => {
+  console.log(`CRM WhatsApp corriendo en puerto ${PORT}`);
+});
+
