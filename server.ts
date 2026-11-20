@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import crypto from 'crypto';
-import { sendWhatsApp } from './src/lib/whatsapp';
+import { sendWhatsApp } from './src/lib/whatsapp.ts';
 import { 
   getStoredContacts, 
   saveStoredContacts, 
@@ -14,7 +14,7 @@ import {
   getStoredScheduledMessages,
   saveStoredScheduledMessages,
   getStoredSettings 
-} from './src/lib/mockStore';
+} from './src/lib/mockStore.ts';
 
 dotenv.config();
 
